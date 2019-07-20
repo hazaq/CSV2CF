@@ -37,10 +37,10 @@ cf_version = "AWSTemplateFormatVersion: 2010-09-09"
 def os_check(tag_os,count):
     if (tag_os == "Linux") or (tag_os == "linux"):
         user_data = Base64('#!/bin/bash')
-        return ('linux', user_data)
+        return ('', user_data)
     elif (tag_os == "Windows") or (tag_os == "windows"):
         user_data = Base64('<powershell> </powershell>') 
-        return ('win', user_data)
+        return ('', user_data)
     else:
          print (f"ERROR: Invalid OS Tag at line: {count}, Valid options \"Linux\"|\"Windows\" ")
          exit()
