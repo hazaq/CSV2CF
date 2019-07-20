@@ -100,3 +100,7 @@ print(cf_version,file=cf)
 print(t.to_yaml(),file=cf)
 print(f"{out_cf} Finished with SUCCESS.")
 cf.close()
+
+#ToDO
+#Fix userdata
+#Check sg to vpc
