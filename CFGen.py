@@ -22,6 +22,8 @@ import troposphere.ec2 as ec2
 
 t = Template()
 client = boto3.client('ec2')
+boto_ec2 = boto3.resource('ec2')
+sg = client.describe_security_groups()
 
 parser = argparse.ArgumentParser(description='EC2 CSV to CloudFormation script')
 parser.add_argument('csv_location',metavar='CSV Location',type=str,help='Location of the csv file')
@@ -33,6 +35,21 @@ out_cf = args.out_cf
 
 cf_version = "AWSTemplateFormatVersion: 2010-09-09"
 
+def getvpc(id):
+    subnet = boto_ec2.Subnet(id)
+    return (subnet.vpc_id)
+
+def check_sg(sg_id, vpc_id, count):
+    for i in range(0, len(sg['SecurityGroups'])-1):
+        current_sg = sg['SecurityGroups'][i]['GroupId']
+        if current_sg == sg_id:
+            if sg['SecurityGroups'][i]['VpcId'] == vpc_id:
+                print ('.')
+            else:
+                print ('Security Group not matching the VPC')
+                print ('Error in the csv file')
+                print (f"Check Security Group at line {count}")
+                exit()
 
 def os_check(tag_os,count):
     if (tag_os == "Linux") or (tag_os == "linux"):
@@ -78,6 +95,8 @@ with open(csv_location) as csv_file:
             ec2_iam = ec2_os_check[0]
             ec2_user_data = ec2_os_check[1]
             ec2_root_dev = root_dev(ec2_ami, line_count)
+            ec2_vpc = getvpc(ec2_subnet)
+            check_sg(ec2_sg, ec2_vpc, line_count)
             instance = ec2.Instance(ec2_name,ImageId=ec2_ami,InstanceType=ec2_type,\
                         SecurityGroupIds=[ec2_sg],KeyName=ec2_key,SubnetId=ec2_subnet,\
                         BlockDeviceMappings=[{ "DeviceName" : ec2_root_dev, "Ebs" :{"DeleteOnTermination" : True,\
