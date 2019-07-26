@@ -1,3 +1,3 @@
 Name,AMI,EC2 Instance,Security Group,Key Pair,Subnet,EBS Disk,Tag_Name,Tag_OS,Tag_Env,Tag_Role
-serverblock1,ami-0b898040803850657,t2.micro,sg-b73765d3,default-key,subnet-88a58bb2,50,TropoLin,Linux,Dev,Webserver
-serverblock2,ami-0b898040803850657,t2.micro,sg-b73765d3,default-key,subnet-88a58bb2,50,ERP,Windows,Dev,ERP
+serverblock1,ami-0b898040803850657,t2.micro,sg-b7371122,default-key,subnet-88a58bb2,50,TropoLin,Linux,Dev,Webserver
+serverblock2,ami-0b898040803850657,t2.micro,sg-b7371122,default-key,subnet-88a58bb2,50,ERP,Windows,Dev,ERP
